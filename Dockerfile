@@ -32,6 +32,8 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     sed -i 's@http://archive.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
     sed -i 's@http://security.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    groupadd www && \
+    useradd -g www www && \
     apt -y update && \
     apt -y install mysql-server && \
     sed -i '1s/^/service nginx start\n/' ~/.bashrc && \
