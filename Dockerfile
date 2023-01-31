@@ -19,9 +19,8 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     phpize && \
     ./configure && \
     make && \
-    # cp modules/xdebug.so /usr/lib/php/20190902 && \
     make install && \
-    rm xdebug.tgz && \
+    rm xdebug-3.1.6.tgz && \
     rm -r xdebug-3.1.6 && \
     apt -y install curl gnupg2 ca-certificates lsb-release ubuntu-keyring && \
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null && \
@@ -34,8 +33,10 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     sed -i '1s/^/service mysql start\n/' ~/.bashrc && \
     sed -i '1s/^/service php7.4-fpm start\n/' ~/.bashrc && \
     sed -i '1s/^/#auto start\n/' ~/.bashrc && \
-    chown -R www:www /var/www/
+    chown -R www:www /var/www/ && \
+    service php7.4-fpm start && \
+    service nginx start && \
+    service mysql start
 
 EXPOSE 443 80
 VOLUME ["/var/www"]
-CMD [ "service php7.4-fpm start","service nginx start","service mysql start" ]
