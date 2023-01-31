@@ -28,12 +28,17 @@ WORKDIR /home
 #     echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list && \
 #     apt -y update && \
 #     apt -y install nginx
-RUN apt -y install mysql-server && \
+RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
+    sed -i 's@http://archive.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
+    sed -i 's@http://security.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
+    ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    apt -y update && \
+    apt -y install mysql-server && \
     sed -i '1s/^/service nginx start\n/' ~/.bashrc && \
     sed -i '1s/^/service mysql start\n/' ~/.bashrc && \
     sed -i '1s/^/service php7.4-fpm start\n/' ~/.bashrc && \
     sed -i '1s/^/#auto start\n/' ~/.bashrc && \
-    chown -R www:www /var/www && 
+    chown -R www:www /var/www
 
 EXPOSE 443 80
 VOLUME ["/var/www"]
