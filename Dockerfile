@@ -37,4 +37,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
 
 EXPOSE 443 80
 # VOLUME ["/var/www"]
-CMD ["/usr/sbin/init"]
+
+# 可用性
+# 删除mysql报错，xdebug目录
+# 精简镜像
