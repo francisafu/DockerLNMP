@@ -20,8 +20,8 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     ./configure && \
     make && \
     make install && \
-    rm xdebug-3.1.6.tgz && \
-    rm -r xdebug-3.1.6 && \
+    # rm xdebug-3.1.6.tgz && \
+    # rm -r xdebug-3.1.6 && \
     apt -y install curl gnupg2 ca-certificates lsb-release ubuntu-keyring && \
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null && \
     gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg && \
