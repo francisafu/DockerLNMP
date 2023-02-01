@@ -36,7 +36,7 @@ docker run -dit --privileged=true -p 80:80 -p 443:443 -v /your/web/path:/var/www
   sed -i 's@mirror://mirrors.ubuntu.com/mirrors.txt@http://archive.ubuntu.com/ubuntu/@' /etc/apt/sources.list
   sed -i 's@mirror://mirrors.ubuntu.com/mirrors.txt@http://security.ubuntu.com/ubuntu/@' /etc/apt/sources.list
   ```
-* Time zone has set to Asia/Shanghai(UTC+8), you can change it by yourself with command `dpkg-reconfigure tzdata`.  
+* Time zone has set to Asia/Shanghai(UTC+8), you can change it with command `dpkg-reconfigure tzdata`.  
 * The password of Mysql Server user 'root@localhost' has set to '123456', you can change it with command `mysqladmin -u root -p password "YourNewPassword"` and enter the old one (123456).
 * The config files listed below are all backed up in their own position with suffix '.back':
   * /etc/nginx/conf.d/default.conf
