@@ -10,7 +10,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     sed -i 's@http://security.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     apt -y update && \
-    apt install -y --no-install-recommends curl unzip wget && \
+    apt install -y --no-install-recommends curl unzip wget make && \
     # Install PHP7.4 and Extentions
     apt install -y --no-install-recommends php7.4 php7.4-mysql php7.4-curl php7.4-xml php7.4-json php7.4-fpm php7.4-gd php7.4-mbstring php7.4-zip php7.4-dev && \
     wget https://xdebug.org/files/xdebug-3.1.6.tgz --no-check-certificate && \
