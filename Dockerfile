@@ -29,6 +29,15 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     apt -y install nginx && \
     # Install MySql
     apt -y install mysql-server && \
+    service mysql stop && \
+    usermod -d /var/lib/mysql/ mysql && \
+    chmod -R 755 /var/run/mysqld && \
+    service mysql start && \
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
+    service mysql stop && \
+    mysqld_safe --skip-grant-tables& && \
+    mysql -e "flush privileges;" && \
+    service mysql stop && \
     # Copy Configuration Files
     cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.back && \
     cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.back && \
@@ -44,12 +53,13 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     sed -i '1s/^/service php7.4-fpm start\n/' ~/.bashrc && \
     sed -i '1s/^/#auto start\n/' ~/.bashrc && \
     rm -rf /home/* && \
+    rm -rf /var/lib/apt/lists/* && \
     mkdir /var/www && \
     chown -R www-data:www-data /var/www
 
 EXPOSE 443 80
-# VOLUME ["/var/www"]
+VOLUME ["/var/www"]
 
 # 可用性
-# 删除mysql报错，xdebug目录
+# 删除/var/log/mysql/error.log
 # 精简镜像
