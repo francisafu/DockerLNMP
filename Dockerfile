@@ -32,7 +32,6 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     service mysql stop && \
     usermod -d /var/lib/mysql/ mysql && \
     chmod -R 755 /var/run/mysqld && \
-    cp /etc/mysql/mysql.cnf /etc/mysql/my.cnf && \
     echo '[mysqld]\nskip-grant-tables' >> /etc/mysql/my.cnf && \
     service mysql restart && \
     mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
