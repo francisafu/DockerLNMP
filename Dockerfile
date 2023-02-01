@@ -13,6 +13,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     apt install -y --no-install-recommends curl unzip wget make && \
     # Install PHP7.4 and Extentions
     apt install -y --no-install-recommends php7.4 php7.4-mysql php7.4-curl php7.4-xml php7.4-json php7.4-fpm php7.4-gd php7.4-mbstring php7.4-zip php7.4-dev && \
+    # Install XDebug and Composer
     wget https://xdebug.org/files/xdebug-3.1.6.tgz --no-check-certificate && \
     tar -xvzf xdebug-3.1.6.tgz && \
     cd xdebug-3.1.6 && \
@@ -20,6 +21,8 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     ./configure && \
     make && \
     make install && \
+    curl -sS https://getcomposer.org/installer -o composer-setup.php && \
+    if [ `sha384sum composer-setup.php | awk '{ print $1 }'` = `curl -sS https://composer.github.io/installer.sig` ]; then (php composer-setup.php --install-dir=/usr/local/bin --filename=composer); fi && \
     # Install Nginx
     apt install -y --no-install-recommends gnupg2 ca-certificates lsb-release ubuntu-keyring && \
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null && \
@@ -35,6 +38,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     service mysql start && \
     mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
     service mysql stop && \
+    > /var/log/mysql/error.log && \
     # Copy Configuration Files
     cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.back && \
     cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.back && \
@@ -52,6 +56,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     # Install NodeJS
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt install -y --no-install-recommends nodejs && \
+    # Clean Up
     rm -rf /home/* && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir /var/www && \
@@ -59,6 +64,3 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
 
 EXPOSE 443 80
 VOLUME ["/var/www"]
-
-# /var/log/mysql/error.log
-# Composer
