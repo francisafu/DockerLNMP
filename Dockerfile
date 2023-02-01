@@ -52,7 +52,9 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     cp /home/nginx.conf /etc/nginx/nginx.conf && \
     cp /home/php.ini /etc/php/7.4/fpm/php.ini && \
     cp /home/www.conf /etc/php/7.4/fpm/pool.d/www.conf && \
-    cp /home/99-xdebug.ini /etc/php/7.4/cli/conf.d/99-xdebug.ini && \
+    cp /home/xdebug.ini /etc/php/7.4/mods-available/xdebug.ini && \
+    ln -s /etc/php/7.4/mods-available/xdebug.ini /etc/php/7.4/fpm/conf.d/99-xdebug.ini && \
+    ln -s /etc/php/7.4/mods-available/xdebug.ini /etc/php/7.4/cli/conf.d/99-xdebug.ini && \
     # Services Auto Start
     sed -i '1s/^/service nginx start\n/' ~/.bashrc && \
     sed -i '1s/^/service mysql start\n/' ~/.bashrc && \
