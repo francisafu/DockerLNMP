@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 LABEL author=FrancisFu
 
-ENV DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 ADD * /home/
 WORKDIR /home
 
@@ -9,7 +9,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     sed -i 's@http://archive.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
     sed -i 's@http://security.ubuntu.com/ubuntu/@mirror://mirrors.ubuntu.com/mirrors.txt@' /etc/apt/sources.list && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-    apt -y update && \
+    apt update && \
     apt install -y --no-install-recommends curl unzip wget make && \
     # Install PHP7.4 and Extentions
     apt install -y --no-install-recommends php7.4 php7.4-mysql php7.4-curl php7.4-xml php7.4-json php7.4-fpm php7.4-gd php7.4-mbstring php7.4-zip php7.4-dev && \
@@ -25,7 +25,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null && \
     gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list && \
-    apt -y update && \
+    apt update && \
     apt install -y --no-install-recommends nginx && \
     # Install MySql
     apt install -y --no-install-recommends mysql-server && \
@@ -49,6 +49,9 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     sed -i '1s/^/service mysql start\n/' ~/.bashrc && \
     sed -i '1s/^/service php7.4-fpm start\n/' ~/.bashrc && \
     sed -i '1s/^/#auto start\n/' ~/.bashrc && \
+    # Install NodeJS
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt install -y --no-install-recommends nodejs && \
     rm -rf /home/* && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir /var/www && \
@@ -57,5 +60,5 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
 EXPOSE 443 80
 VOLUME ["/var/www"]
 
-# 可用性
-# 删除/var/log/mysql/error.log
+# /var/log/mysql/error.log
+# Composer
