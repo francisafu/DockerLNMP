@@ -22,7 +22,8 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     make && \
     make install && \
     wget https://getcomposer.org/installer --no-check-certificate -O composer-setup.php && \
-    if [ `sha384sum composer-setup.php | awk '{ print $1 }'` = `curl -sS https://composer.github.io/installer.sig` ]; then (php composer-setup.php --install-dir=/usr/local/bin --filename=composer); fi && \
+    wget https://composer.github.io/installer.sig --no-check-certificate && \
+    if [ `sha384sum composer-setup.php | awk '{ print $1 }'` = `cat installer.sig` ]; then (php composer-setup.php --install-dir=/usr/local/bin --filename=composer); fi && \
     # Install Nginx
     apt install -y --no-install-recommends gnupg2 ca-certificates lsb-release ubuntu-keyring && \
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null && \
@@ -60,7 +61,9 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     rm -rf /home/* && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir /var/www && \
-    chown -R www-data:www-data /var/www
+    chown -R www-data:www-data /var/www && \
+    echo "dash dash/sh boolean false" | debconf-set-selections && \
+    dpkg-reconfigure dash
 
 EXPOSE 443 80
 VOLUME ["/var/www"]
