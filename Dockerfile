@@ -40,6 +40,9 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
     service mysql stop && \
     > /var/log/mysql/error.log && \
+    # Install NodeJS
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt install -y --no-install-recommends nodejs && \
     # Copy Configuration Files
     cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.back && \
     cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.back && \
@@ -49,14 +52,12 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     cp /home/nginx.conf /etc/nginx/nginx.conf && \
     cp /home/php.ini /etc/php/7.4/fpm/php.ini && \
     cp /home/www.conf /etc/php/7.4/fpm/pool.d/www.conf && \
+    cp /home/99-xdebug.ini /etc/php/7.4/cli/conf.d/99-xdebug.ini && \
     # Services Auto Start
     sed -i '1s/^/service nginx start\n/' ~/.bashrc && \
     sed -i '1s/^/service mysql start\n/' ~/.bashrc && \
     sed -i '1s/^/service php7.4-fpm start\n/' ~/.bashrc && \
     sed -i '1s/^/#auto start\n/' ~/.bashrc && \
-    # Install NodeJS
-    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
-    apt install -y --no-install-recommends nodejs && \
     # Clean Up
     rm -rf /home/* && \
     rm -rf /var/lib/apt/lists/* && \
