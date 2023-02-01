@@ -32,11 +32,13 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     service mysql stop && \
     usermod -d /var/lib/mysql/ mysql && \
     chmod -R 755 /var/run/mysqld && \
-    service mysql start && \
+    cp /etc/mysql/mysql.cnf /etc/mysql/my.cnf && \
+    echo '[mysqld]\nskip-grant-tables' >> /etc/mysql/my.cnf && \
+    service mysql restart && \
     mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
-    service mysql stop && \
-    mysqld_safe --skip-grant-tables& && \
     mysql -e "flush privileges;" && \
+    head -n -2 /etc/mysql/my.cnf > temp.cnf && \
+    mv temp.cnf /etc/mysql/my.cnf && \
     service mysql stop && \
     # Copy Configuration Files
     cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.back && \
