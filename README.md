@@ -4,9 +4,9 @@ A docker image of Ubuntu, PHP, Nginx, Mysql and NodeJS for development use.
 
 ## Warining
 
-This is an image built for **developing environment** ONLY!
+This is an image built for *developing environment* ONLY!
 
-THIS IMAGE SHOULD **NOT** BE USED IN ANY PRODUCTION ENVIRONMENT!!!
+THIS IMAGE SHOULD *NOT* BE USED IN ANY PRODUCTION ENVIRONMENT!!!
 
 ## Version
 
