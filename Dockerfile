@@ -21,7 +21,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     ./configure && \
     make && \
     make install && \
-    curl -sS https://getcomposer.org/installer -o composer-setup.php && \
+    wget https://getcomposer.org/installer --no-check-certificate -O composer-setup.php && \
     if [ `sha384sum composer-setup.php | awk '{ print $1 }'` = `curl -sS https://composer.github.io/installer.sig` ]; then (php composer-setup.php --install-dir=/usr/local/bin --filename=composer); fi && \
     # Install Nginx
     apt install -y --no-install-recommends gnupg2 ca-certificates lsb-release ubuntu-keyring && \
