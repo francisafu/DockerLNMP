@@ -29,10 +29,12 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.back && \
     apt install -y --no-install-recommends nginx && \
     # Install MySql
     apt install -y --no-install-recommends mysql-server && \
-    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
     service mysql stop && \
     usermod -d /var/lib/mysql/ mysql && \
     chmod -R 755 /var/run/mysqld && \
+    service mysql start && \
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';" && \
+    service mysql stop && \
     # Copy Configuration Files
     cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.back && \
     cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.back && \
